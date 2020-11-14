@@ -78,3 +78,32 @@ function getCurrentWeather(data) {
     $("#currentWeather").append(card)
 }
 
+function getFiveDayForecast() {
+
+    $.ajax({
+        url: "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + apiKey,
+        method: "GET"
+    })
+        .then(function (data) {
+            $('#fiveDayForecast').empty();
+
+            // loop to get multi day weather info
+            for (var i = 0; i < data.list.length; i++) {
+
+                if (data.list[i].dt_txt.indexOf("15:00:00") !== -1) {
+
+                    var card = $("<div>").addClass("card col-md-2 ml-2 bg-primary text-white");
+                    var cardBody = $("<div>").addClass("card-body p-2")
+                    var forecastDate = $("<h4>").addClass("card-title").text(new Date(data.list[i].dt_txt).toLocaleDateString());
+                    var forecastTempF = Math.floor((data.list[i].main.temp - 273.15) * 1.80 + 32);
+                    var forecastTemperature = $("<p>").addClass("card-text").text("Temperature: " + forecastTempF + "°F");
+                    var forecastHumidity = $("<p>").addClass("card-text").text("Humidity: " + data.list[i].main.humidity + "%");
+                    var image = $("<img>").attr("src", "https://openweathermap.org/img/w/" + data.list[i].weather[0].icon + ".png")
+
+                    cardBody.append(forecastDate, image, forecastTemperature, forecastHumidity);
+                    card.append(cardBody);
+                    $("#fiveDayForecast").append(card);
+                }
+            }
+        });
+}
