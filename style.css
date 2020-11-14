@@ -1,0 +1,14 @@
+header {
+    background-color: dimgrey;
+    color: white;
+    text-align: center;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: dimgray;
+    color: white;
+    text-align: center;
+}
